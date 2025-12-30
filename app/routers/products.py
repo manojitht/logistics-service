@@ -21,3 +21,5 @@ def create_product(product: schemas.ProductCreate, db: Session = Depends(databas
 def list_products(skip: int = 0, limit: int = 10, db: Session = Depends(database.get_db)):
     products = db.query(models.Product).offset(skip).limit(limit).all()
     return products
+
+
