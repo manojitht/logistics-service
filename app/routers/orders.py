@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app import database, schemas, models, crud
+from typing import List
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -28,4 +29,10 @@ def update_order_status(order_id: int, status_update: schemas.OrderUpdateStatus,
     db.commit()
     db.refresh(order)
     return order
+
+@router.get("/", response_model=List[schemas.OrderResponse])
+def list_orders(skip: int = 0, limit: int = 10, db: Session = Depends(database.get_db)):
+    orders = db.query(models.Order).offset(skip).limit(limit).all()
+    return orders
+
 
