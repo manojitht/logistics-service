@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import products
+from app.routers import products, orders
 from app.database import engine, Base
 
 Base.metadata.create_all(bind=engine)
@@ -11,7 +11,9 @@ app = FastAPI(
 )
 
 app.include_router(products.router)
+app.include_router(orders.router)
 
 @app.get("/")
 def read_root():
     return {"message": "Logistics Service is running. Visit /docs for Swagger UI."}
+
